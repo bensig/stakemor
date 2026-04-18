@@ -27,25 +27,27 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
-html {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  scroll-behavior: smooth;
-}
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
 
-body {
-  min-height: 100vh;
-  background: var(--color-bg);
-}
+  body {
+    min-height: 100vh;
+    background: var(--color-bg);
+  }
 
-a { color: var(--color-mor); text-decoration: none; }
-a:hover { color: var(--color-mor-hover); }
+  a { color: var(--color-mor); text-decoration: none; }
+  a:hover { color: var(--color-mor-hover); }
 
-::selection { background: var(--color-mor-dim); color: var(--color-mor); }
+  ::selection { background: var(--color-mor-dim); color: var(--color-mor); }
 
-:focus-visible {
-  outline: 2px solid var(--color-mor);
-  outline-offset: 2px;
-  border-radius: 2px;
+  :focus-visible {
+    outline: 2px solid var(--color-mor);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
