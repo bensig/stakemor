@@ -18,15 +18,19 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     return { ok: false, error: 'invalid_email' };
   }
   const resend = new Resend(input.apiKey);
-  const { error } = await resend.contacts.create({
-    email: input.email,
-    audienceId: input.audienceId,
-    unsubscribed: false,
-    firstName: undefined,
-    lastName: undefined,
-  });
-  if (error) {
+  try {
+    const { error } = await resend.contacts.create({
+      email: input.email,
+      audienceId: input.audienceId,
+      unsubscribed: false,
+      firstName: undefined,
+      lastName: undefined,
+    });
+    if (error) {
+      return { ok: false, error: 'provider_error' };
+    }
+    return { ok: true };
+  } catch {
     return { ok: false, error: 'provider_error' };
   }
-  return { ok: true };
 }

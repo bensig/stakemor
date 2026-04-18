@@ -56,4 +56,16 @@ describe('subscribe', () => {
     });
     expect(result).toEqual({ ok: false, error: 'provider_error' });
   });
+
+  it('returns provider_error when Resend throws', async () => {
+    mockCreate.mockRejectedValue(new Error('network timeout'));
+
+    const result = await subscribe({
+      email: 'a@b.com',
+      path: 'long',
+      apiKey: 'key',
+      audienceId: 'aud',
+    });
+    expect(result).toEqual({ ok: false, error: 'provider_error' });
+  });
 });
