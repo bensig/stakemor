@@ -6,7 +6,7 @@ import {
   morBillingUrl,
 } from '../lib/urls';
 
-const REFERRER = import.meta.env.PUBLIC_SUSHI_REFERRER ?? 'stakemor';
+const REFERRER = import.meta.env.PUBLIC_SUSHI_REFERRER ?? '0x4070b37b39347f34effE4607F2D7611d6C3C9fDF';
 
 const MOR_BASE = '0x7431ada8a591c955a994a21710752ef9b882b8e3';
 
@@ -29,7 +29,7 @@ export const shortPath: Path = {
       number: 2,
       title: 'Swap ETH → MOR on Base',
       blurb:
-        'Use SushiSwap on Base to swap your bridged ETH into MOR.',
+        'Use SushiSwap on Base to swap your bridged ETH into MOR. If MOR is not pre-selected, paste the address: 0x7431ada8a591c955a994a21710752ef9b882b8e3',
       ctaLabel: 'Open SushiSwap (Base)',
       ctaHref: sushiSwapUrl({
         fromChain: 8453,

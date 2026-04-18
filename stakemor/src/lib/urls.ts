@@ -1,23 +1,42 @@
+const CHAIN_SLUGS: Record<number, string> = {
+  1: 'ethereum',
+  42161: 'arbitrum',
+  8453: 'base',
+};
+
 export interface SushiSwapParams {
   fromChain: number;
   toChain: number;
-  fromToken: string; // 'NATIVE' or 0x... address
+  fromToken: string; // 'NATIVE' or 0x... address (informational; Sushi UI may not auto-fill)
   toToken: string;
-  referrer: string;
+  referrer: string;  // wallet address that owns the Sushi referral code
+}
+
+function chainSlug(id: number): string {
+  const slug = CHAIN_SLUGS[id];
+  if (!slug) throw new Error(`sushiSwapUrl: unsupported chainId ${id}`);
+  return slug;
 }
 
 export function sushiSwapUrl(p: SushiSwapParams): string {
   if (!p.referrer) {
     throw new Error('sushiSwapUrl: referrer is required');
   }
-  const params = new URLSearchParams({
-    chainId: String(p.fromChain),
-    toChainId: String(p.toChain),
-    token0: p.fromToken,
-    token1: p.toToken,
-    referrer: p.referrer,
-  });
-  return `https://www.sushi.com/swap?${params.toString()}`;
+  const fromSlug = chainSlug(p.fromChain);
+  const isCrossChain = p.fromChain !== p.toChain;
+  const path = isCrossChain ? 'cross-chain-swap' : 'swap';
+  const params = new URLSearchParams({ referrer: p.referrer });
+  if (isCrossChain) {
+    params.set('dstChainId', String(p.toChain));
+  }
+  // Token deep-linking is best-effort; Sushi's UI may ignore these.
+  if (p.fromToken && p.fromToken !== 'NATIVE') {
+    params.set('token0', p.fromToken);
+  }
+  if (p.toToken) {
+    params.set('token1', p.toToken);
+  }
+  return `https://www.sushi.com/${fromSlug}/${path}?${params.toString()}`;
 }
 
 export function superbridgeUrl(): string {

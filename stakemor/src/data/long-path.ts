@@ -7,7 +7,7 @@ import {
   morBillingUrl,
 } from '../lib/urls';
 
-const REFERRER = import.meta.env.PUBLIC_SUSHI_REFERRER ?? 'stakemor';
+const REFERRER = import.meta.env.PUBLIC_SUSHI_REFERRER ?? '0x4070b37b39347f34effE4607F2D7611d6C3C9fDF';
 
 const MOR_ARBITRUM = '0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86';
 
@@ -20,7 +20,7 @@ export const longPath: Path = {
       number: 1,
       title: 'Swap ETH → MOR (cross-chain, one transaction)',
       blurb:
-        'SushiSwap can move your ETH from Ethereum mainnet to MOR on Arbitrum in a single transaction. No manual bridge step.',
+        'SushiSwap can move your ETH from Ethereum mainnet to MOR on Arbitrum in a single transaction. No manual bridge step. If MOR is not pre-selected, paste the address: 0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86',
       ctaLabel: 'Open SushiSwap',
       ctaHref: sushiSwapUrl({
         fromChain: 1,
