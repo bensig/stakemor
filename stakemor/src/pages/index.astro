@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import AmountPicker from '../components/AmountPicker.astro';
 import PathSidebar from '../components/PathSidebar.astro';
 import PathSection from '../components/PathSection.astro';
+import EmailCapture from '../components/EmailCapture.astro';
 import { longPath } from '../data/long-path';
 import { shortPath } from '../data/short-path';
 ---
@@ -17,4 +18,5 @@ import { shortPath } from '../data/short-path';
       <PathSection path={shortPath} hidden />
     </main>
   </div>
+  <EmailCapture />
 </Base>

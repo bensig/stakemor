@@ -1,0 +1,82 @@
+---
+---
+<section
+  id="email-capture"
+  class="max-w-2xl mx-auto px-6 mt-24 mb-12 text-center"
+>
+  <h2 class="text-3xl font-semibold">
+    Want <span class="text-[var(--color-mor)]">one-click stakemor</span> when it launches?
+  </h2>
+  <p class="mt-3 text-[var(--color-text-muted)]">
+    We are building a tool that does swap + bridge + stake in a single
+    transaction. Drop your email and you will be the first to know.
+  </p>
+  <form id="subscribe-form" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+    <input
+      type="email"
+      name="email"
+      required
+      placeholder="you@example.com"
+      class="flex-1 px-4 py-3 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] focus:outline-none focus:border-[var(--color-mor)]"
+    />
+    <button
+      type="submit"
+      class="px-5 py-3 rounded-lg bg-[var(--color-mor)] text-black font-semibold hover:bg-[var(--color-mor-hover)] transition-colors disabled:opacity-50"
+    >
+      Notify me
+    </button>
+  </form>
+  <p
+    id="subscribe-status"
+    aria-live="polite"
+    class="mt-4 text-sm min-h-[1.25rem]"
+  ></p>
+</section>
+
+<script>
+  function currentPath(): 'long' | 'short' {
+    const m = window.location.hash.match(/path=(long|short)/);
+    return (m?.[1] as 'long' | 'short') ?? 'long';
+  }
+
+  const form = document.getElementById('subscribe-form') as HTMLFormElement | null;
+  const status = document.getElementById('subscribe-status');
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+      button.disabled = true;
+      status.textContent = 'Subscribing…';
+      status.style.color = 'var(--color-text-muted)';
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email, path: currentPath() }),
+        });
+        const json = (await res.json()) as { ok: boolean; error?: string };
+        if (json.ok) {
+          status.textContent = "You're in. We'll email you at launch.";
+          status.style.color = 'var(--color-mor)';
+          form.reset();
+          const w = window as unknown as {
+            plausible?: (event: string, opts?: { props?: Record<string, string> }) => void;
+          };
+          w.plausible?.('subscribe', { props: { path: currentPath() } });
+        } else {
+          status.textContent =
+            json.error === 'invalid_email'
+              ? 'That email looks off — try again.'
+              : 'Something broke on our end. Try again in a minute.';
+          status.style.color = 'var(--color-error)';
+        }
+      } catch {
+        status.textContent = 'Network error. Try again.';
+        status.style.color = 'var(--color-error)';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
