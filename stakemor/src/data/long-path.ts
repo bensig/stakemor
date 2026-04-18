@@ -66,7 +66,7 @@ export const longPath: Path = {
       successCriterion:
         'Your stake shows in "Your Position" on the subnet page. Lock period is 7 days.',
       gotcha:
-        'The minimum is 0.001 MOR but realistic API credits start kicking in around 50–100 MOR depending on subnet rates.',
+        'The minimum stake is 0.001 MOR but the credits are proportional to your stake. As a rough rule of thumb, 4,800 MOR earns roughly $12/day in API credits at current rates. See the FAQ for details on pricing.',
     },
     {
       number: 5,
