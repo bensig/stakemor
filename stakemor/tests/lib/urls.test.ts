@@ -8,7 +8,7 @@ import {
 } from '../../src/lib/urls';
 
 describe('sushiSwapUrl', () => {
-  it('builds a cross-chain ETH-mainnet → MOR-Arbitrum URL with referrer + dstChainId', () => {
+  it('builds a cross-chain ETH-mainnet → MOR-Arbitrum URL with referrer + chainId1', () => {
     const url = sushiSwapUrl({
       fromChain: 1,
       toChain: 42161,
@@ -17,10 +17,10 @@ describe('sushiSwapUrl', () => {
       referrer: '0x4070b37b39347f34effE4607F2D7611d6C3C9fDF',
     });
     expect(url).toContain('https://www.sushi.com/ethereum/cross-chain-swap');
-    expect(url).toContain('dstChainId=42161');
+    expect(url).toContain('chainId1=42161');
     expect(url).toContain('referrer=0x4070b37b39347f34effE4607F2D7611d6C3C9fDF');
+    expect(url).toContain('token0=NATIVE');
     expect(url).toContain('token1=0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86');
-    expect(url).not.toContain('token0='); // NATIVE is omitted
   });
 
   it('builds a same-chain Base swap URL', () => {
@@ -33,8 +33,9 @@ describe('sushiSwapUrl', () => {
     });
     expect(url).toContain('https://www.sushi.com/base/swap');
     expect(url).not.toContain('cross-chain-swap');
-    expect(url).not.toContain('dstChainId');
+    expect(url).not.toContain('chainId1');
     expect(url).toContain('referrer=0x4070b37b39347f34effE4607F2D7611d6C3C9fDF');
+    expect(url).toContain('token0=NATIVE');
     expect(url).toContain('token1=0x7431ada8a591c955a994a21710752ef9b882b8e3');
   });
 

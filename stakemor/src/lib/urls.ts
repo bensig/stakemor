@@ -27,15 +27,10 @@ export function sushiSwapUrl(p: SushiSwapParams): string {
   const path = isCrossChain ? 'cross-chain-swap' : 'swap';
   const params = new URLSearchParams({ referrer: p.referrer });
   if (isCrossChain) {
-    params.set('dstChainId', String(p.toChain));
+    params.set('chainId1', String(p.toChain));
   }
-  // Token deep-linking is best-effort; Sushi's UI may ignore these.
-  if (p.fromToken && p.fromToken !== 'NATIVE') {
-    params.set('token0', p.fromToken);
-  }
-  if (p.toToken) {
-    params.set('token1', p.toToken);
-  }
+  params.set('token0', p.fromToken);
+  params.set('token1', p.toToken);
   return `https://www.sushi.com/${fromSlug}/${path}?${params.toString()}`;
 }
 
