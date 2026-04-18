@@ -1,0 +1,26 @@
+---
+import type { Path } from '../data/types';
+import StepCard from './StepCard.astro';
+
+interface Props {
+  path: Path;
+  hidden?: boolean;
+}
+
+const { path, hidden = false } = Astro.props;
+---
+<section
+  data-path-section={path.id}
+  hidden={hidden}
+  class="space-y-8"
+>
+  <header class="space-y-2">
+    <p class="text-xs uppercase tracking-widest text-[var(--color-mor)] font-medium">
+      {path.label}
+    </p>
+    <p class="text-[var(--color-text-muted)] text-sm">{path.amountHint}</p>
+  </header>
+  {path.steps.map((step) => (
+    <StepCard step={step} pathId={path.id} />
+  ))}
+</section>

@@ -3,27 +3,18 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import AmountPicker from '../components/AmountPicker.astro';
 import PathSidebar from '../components/PathSidebar.astro';
+import PathSection from '../components/PathSection.astro';
+import { longPath } from '../data/long-path';
+import { shortPath } from '../data/short-path';
 ---
 <Base>
   <Hero />
   <AmountPicker />
   <div class="max-w-6xl mx-auto px-6 py-12 flex gap-12">
     <PathSidebar />
-    <main class="flex-1 min-w-0 space-y-12">
-      <section data-path-section="long" class="space-y-12">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <div id={`step-long-${n}`} class="min-h-[60vh] border border-[var(--color-border)] rounded-lg p-6">
-            <p class="text-[var(--color-text-muted)]">Long step {n} placeholder</p>
-          </div>
-        ))}
-      </section>
-      <section data-path-section="short" class="space-y-12" hidden>
-        {[1, 2, 3, 4].map((n) => (
-          <div id={`step-short-${n}`} class="min-h-[60vh] border border-[var(--color-border)] rounded-lg p-6">
-            <p class="text-[var(--color-text-muted)]">Short step {n} placeholder</p>
-          </div>
-        ))}
-      </section>
+    <main class="flex-1 min-w-0">
+      <PathSection path={longPath} />
+      <PathSection path={shortPath} hidden />
     </main>
   </div>
 </Base>
