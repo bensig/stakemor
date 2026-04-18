@@ -6,7 +6,7 @@
 
 **Architecture:** Astro static site with islands for the interactive amount picker, scroll-spy sidebar, and email capture form. One single-page route (`/`) with content-driven step cards generated from typed data files. Server-side endpoint at `/api/subscribe` for Resend. Plausible for analytics. Deployed to Cloudflare Pages.
 
-**Tech Stack:** Astro 5, Tailwind CSS 4, TypeScript, Vitest + happy-dom for unit/component tests, Resend for email capture, Plausible for analytics, Cloudflare Pages for hosting.
+**Tech Stack:** Astro 6, Tailwind CSS 4, TypeScript, Vitest + happy-dom for unit/component tests, Resend for email capture, Plausible for analytics, Cloudflare Pages for hosting.
 
 **Spec:** `docs/superpowers/specs/2026-04-17-stakemor-guide-design.md`
 
@@ -20,7 +20,6 @@ stakemor/
 ├── package.json
 ├── tsconfig.json
 ├── vitest.config.ts
-├── tailwind.config.mjs
 ├── .env.example
 ├── .gitignore
 ├── README.md
@@ -80,7 +79,6 @@ stakemor/
 - Create: `package.json`
 - Create: `astro.config.mjs`
 - Create: `tsconfig.json`
-- Create: `tailwind.config.mjs`
 - Create: `vitest.config.ts`
 - Create: `.gitignore`
 - Create: `.env.example`
@@ -126,18 +124,17 @@ export default defineConfig({
 
 ```typescript
 import { defineConfig } from 'vitest/config';
-import { getViteConfig } from 'astro/config';
 
-export default getViteConfig(
-  defineConfig({
-    test: {
-      environment: 'happy-dom',
-      globals: true,
-      include: ['tests/**/*.test.ts'],
-    },
-  }),
-);
+export default defineConfig({
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+    include: ['tests/**/*.test.ts'],
+  },
+});
 ```
+
+> **Note:** the original draft of this task used `getViteConfig` from `astro/config` to wrap the Vitest config. That breaks because `@cloudflare/vite-plugin` (loaded by the Cloudflare adapter) refuses Vitest's environment options. Pure-function unit tests don't need the Astro wrapper, so we use bare Vitest config. If we ever add Astro component tests, set up a separate `vitest.astro.config.ts` with the wrapper.
 
 - [ ] **Step 5: Write `.gitignore`**
 
@@ -832,7 +829,7 @@ git commit -m "feat: add hero section"
 ---
 <aside
   id="amount-picker"
-  class="sticky top-0 z-30 backdrop-blur bg-[rgba(10,10,10,0.85)] border-b border-[var(--color-border)]"
+  class="sticky top-0 z-30 backdrop-blur bg-[var(--color-bg-translucent)] border-b border-[var(--color-border)]"
 >
   <div class="max-w-4xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
     <p class="text-sm text-[var(--color-text-muted)] font-medium">
@@ -1168,10 +1165,10 @@ const { step, pathId } = Astro.props;
           </p>
         </div>
         {step.gotcha && (
-          <div class="flex gap-2 p-3 rounded-lg bg-[rgba(234,179,8,0.08)] border border-[rgba(234,179,8,0.25)]">
-            <span class="text-yellow-400">⚠</span>
+          <div class="flex gap-2 p-3 rounded-lg bg-[var(--color-warn-bg)] border border-[var(--color-warn-border)]">
+            <span class="text-[var(--color-warn)]">⚠</span>
             <p class="text-[var(--color-text-muted)]">
-              <strong class="text-yellow-200">Gotcha:</strong> {step.gotcha}
+              <strong class="text-[var(--color-warn-text)]">Gotcha:</strong> {step.gotcha}
             </p>
           </div>
         )}
@@ -1618,7 +1615,7 @@ git commit -m "feat: add Resend-backed subscribe endpoint with TDD coverage"
             json.error === 'invalid_email'
               ? 'That email looks off — try again.'
               : 'Something broke on our end. Try again in a minute.';
-          status.style.color = '#fb7185';
+          status.style.color = 'var(--color-error)';
         }
       } catch {
         status.textContent = 'Network error. Try again.';
@@ -1807,7 +1804,7 @@ Step-by-step guide for staking MOR tokens to earn Morpheus API credits.
 
 ## Stack
 
-- [Astro 5](https://astro.build) (server output, Cloudflare adapter)
+- [Astro 6](https://astro.build) (server output, Cloudflare adapter)
 - Tailwind CSS 4
 - Resend for email capture
 - Plausible for analytics

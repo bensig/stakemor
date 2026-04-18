@@ -120,7 +120,7 @@ The mor.org dashboard uses "Builders" as the menu label for what are actually st
 ## Tech Stack
 
 - **Static site.** No backend except the email-capture endpoint.
-- **Framework:** Astro or plain Next.js (static export). Astro recommended — better for content-heavy single pages, smaller JS payload.
+- **Framework:** Astro 6 (server output for the email-capture endpoint).
 - **Hosting:** Vercel or Cloudflare Pages.
 - **Email:** Resend (simplest API, generous free tier) or ConvertKit (better if planning a newsletter).
 - **Analytics:** Plausible or Umami (privacy-friendly, no GDPR banner).
