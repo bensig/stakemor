@@ -13,8 +13,8 @@ declare namespace App {
   interface Locals {
     runtime: {
       env: {
-        RESEND_API_KEY?: string;
-        RESEND_AUDIENCE_ID?: string;
+        SENDGRID_API_KEY?: string;
+        SENDGRID_LIST_ID?: string;
       };
     };
   }

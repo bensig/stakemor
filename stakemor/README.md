@@ -6,7 +6,7 @@ Step-by-step guide for staking MOR tokens to earn Morpheus API credits.
 
 - [Astro 6](https://astro.build) (server output, Cloudflare adapter)
 - Tailwind CSS 4
-- Resend for email capture
+- SendGrid for email capture
 - Plausible for analytics
 - Vitest + happy-dom for tests
 
@@ -24,8 +24,8 @@ npm run build          # production build into dist/
 
 | Var | Where | Required |
 |-----|-------|----------|
-| `RESEND_API_KEY` | Resend dashboard → API Keys | yes (for /api/subscribe) |
-| `RESEND_AUDIENCE_ID` | Resend → Audiences → ID | yes |
+| `SENDGRID_API_KEY` | SendGrid → Settings → API Keys (needs Marketing scope) | yes (for /api/subscribe) |
+| `SENDGRID_LIST_ID` | SendGrid → Marketing → Contacts → Lists → click your list → ID in URL | yes |
 | `PUBLIC_SUSHI_REFERRER` | Sushi referral code (defaults to `stakemor`); build-time variable, visible to clients | no |
 | `PUBLIC_PLAUSIBLE_DOMAIN` | Plausible domain to track (e.g. `stakemor.com`) | no |
 

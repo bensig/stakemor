@@ -1,9 +1,7 @@
-import { Resend } from 'resend';
-
 export interface SubscribeInput {
   email: string;
   apiKey: string;
-  audienceId: string;
+  listId: string;
 }
 
 export type SubscribeResult =
@@ -16,16 +14,19 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
   if (!EMAIL_RE.test(input.email)) {
     return { ok: false, error: 'invalid_email' };
   }
-  const resend = new Resend(input.apiKey);
   try {
-    const { error } = await resend.contacts.create({
-      email: input.email,
-      audienceId: input.audienceId,
-      unsubscribed: false,
-      firstName: undefined,
-      lastName: undefined,
+    const res = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${input.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        list_ids: [input.listId],
+        contacts: [{ email: input.email }],
+      }),
     });
-    if (error) {
+    if (!res.ok) {
       return { ok: false, error: 'provider_error' };
     }
     return { ok: true };

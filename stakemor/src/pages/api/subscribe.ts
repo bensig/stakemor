@@ -4,8 +4,8 @@ import { subscribe } from '../../lib/subscribe';
 export const prerender = false;
 
 interface Env {
-  RESEND_API_KEY?: string;
-  RESEND_AUDIENCE_ID?: string;
+  SENDGRID_API_KEY?: string;
+  SENDGRID_LIST_ID?: string;
 }
 
 function envFrom(locals: App.Locals): Env {
@@ -27,7 +27,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   }
 
   const env = envFrom(locals);
-  if (!env.RESEND_API_KEY || !env.RESEND_AUDIENCE_ID) {
+  if (!env.SENDGRID_API_KEY || !env.SENDGRID_LIST_ID) {
     return Response.json(
       { ok: false, error: 'misconfigured' },
       { status: 500 },
@@ -36,8 +36,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const result = await subscribe({
     email,
-    apiKey: env.RESEND_API_KEY,
-    audienceId: env.RESEND_AUDIENCE_ID,
+    apiKey: env.SENDGRID_API_KEY,
+    listId: env.SENDGRID_LIST_ID,
   });
 
   if (result.ok) return Response.json(result, { status: 200 });

@@ -19,8 +19,8 @@ function makeContext(body: unknown, env: Record<string, string> = {}) {
     locals: {
       runtime: {
         env: {
-          RESEND_API_KEY: 'key',
-          RESEND_AUDIENCE_ID: 'aud',
+          SENDGRID_API_KEY: 'SG.key',
+          SENDGRID_LIST_ID: 'list_123',
           ...env,
         },
       },
@@ -36,8 +36,8 @@ describe('POST /api/subscribe', () => {
     await expect(res.json()).resolves.toEqual({ ok: true });
     expect(subscribeMock).toHaveBeenCalledWith({
       email: 'a@b.com',
-      apiKey: 'key',
-      audienceId: 'aud',
+      apiKey: 'SG.key',
+      listId: 'list_123',
     });
   });
 
@@ -59,7 +59,7 @@ describe('POST /api/subscribe', () => {
 
   it('returns 500 when env is missing the API key', async () => {
     const res = await POST(
-      makeContext({ email: 'a@b.com' }, { RESEND_API_KEY: '' }),
+      makeContext({ email: 'a@b.com' }, { SENDGRID_API_KEY: '' }),
     );
     expect(res.status).toBe(500);
   });
