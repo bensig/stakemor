@@ -42,6 +42,29 @@ const { step, pathId } = Astro.props;
         />
       )}
 
+      {step.contractAddress && (
+        <div class="mt-4 flex items-center gap-3 p-3 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)]">
+          {step.contractLabel && (
+            <span class="text-xs uppercase tracking-wide text-[var(--color-text-dim)] shrink-0">
+              {step.contractLabel}
+            </span>
+          )}
+          <code class="font-mono text-sm text-[var(--color-text)] flex-1 min-w-0 truncate">
+            <span class="hidden sm:inline">{step.contractAddress}</span>
+            <span class="sm:hidden">
+              {step.contractAddress.slice(0, 8) + '…' + step.contractAddress.slice(-6)}
+            </span>
+          </code>
+          <button
+            type="button"
+            class="copy-btn shrink-0 px-3 py-1.5 rounded-md border border-[var(--color-border)] text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-mor)] transition-colors"
+            data-address={step.contractAddress}
+          >
+            Copy
+          </button>
+        </div>
+      )}
+
       <div class="mt-6 grid gap-3 text-sm">
         <div class="flex gap-2">
           <span class="text-[var(--color-mor)]">✓</span>
@@ -63,6 +86,13 @@ const { step, pathId } = Astro.props;
   </div>
 </article>
 
+<style>
+  .copy-btn.copied {
+    color: var(--color-mor);
+    border-color: var(--color-mor);
+  }
+</style>
+
 <script>
   document.querySelectorAll<HTMLAnchorElement>('a[data-cta]').forEach((a) => {
     a.addEventListener('click', () => {
@@ -70,6 +100,27 @@ const { step, pathId } = Astro.props;
         plausible?: (event: string, opts?: { props?: Record<string, string> }) => void;
       };
       w.plausible?.('cta_click', { props: { step: a.dataset.cta ?? '' } });
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('button.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const address = btn.dataset.address;
+      if (!address) return;
+      try {
+        await navigator.clipboard.writeText(address);
+        const original = btn.textContent;
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1500);
+      } catch {
+        // clipboard API may be unavailable on http: or in sandboxed contexts
+        btn.textContent = 'Copy failed';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+      }
     });
   });
 </script>

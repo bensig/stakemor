@@ -7,6 +7,8 @@ export interface Step {
   successCriterion: string; // "what success looks like"
   gotcha?: string;        // optional foot-gun callout
   screenshot?: string;    // /screenshots/foo.png — optional, populated later
+  contractAddress?: string;  // full 0x... hex
+  contractLabel?: string;    // e.g. "MOR on Arbitrum"
 }
 
 export interface Path {

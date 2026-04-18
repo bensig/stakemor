@@ -29,7 +29,7 @@ export const shortPath: Path = {
       number: 2,
       title: 'Swap ETH → MOR on Base',
       blurb:
-        'Use SushiSwap on Base to swap your bridged ETH into MOR. If MOR is not pre-selected, paste the address: 0x7431ada8a591c955a994a21710752ef9b882b8e3',
+        'Use SushiSwap on Base to swap your bridged ETH into MOR. If MOR is not pre-selected in the UI, paste the address below.',
       ctaLabel: 'Open SushiSwap (Base)',
       ctaHref: sushiSwapUrl({
         fromChain: 8453,
@@ -41,6 +41,8 @@ export const shortPath: Path = {
       successCriterion: 'Base MOR balance shows up in your wallet.',
       gotcha:
         'Watch the slippage warning. If it shows >2% on a small swap, the pool is congested — wait or use the long path.',
+      contractAddress: MOR_BASE,
+      contractLabel: 'MOR on Base',
     },
     {
       number: 3,

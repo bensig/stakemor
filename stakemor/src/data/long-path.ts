@@ -20,7 +20,7 @@ export const longPath: Path = {
       number: 1,
       title: 'Swap ETH → MOR (cross-chain, one transaction)',
       blurb:
-        'SushiSwap can move your ETH from Ethereum mainnet to MOR on Arbitrum in a single transaction. No manual bridge step. If MOR is not pre-selected, paste the address: 0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86',
+        'SushiSwap can move your ETH from Ethereum mainnet to MOR on Arbitrum in a single transaction. No manual bridge step. If MOR is not pre-selected in the UI, paste the address below.',
       ctaLabel: 'Open SushiSwap',
       ctaHref: sushiSwapUrl({
         fromChain: 1,
@@ -33,6 +33,8 @@ export const longPath: Path = {
         "Your wallet's Arbitrum MOR balance shows the new tokens (may take 1–3 minutes).",
       gotcha:
         'Set slippage to 1% if the default fails. The swap+bridge happens in one transaction so the gas estimate looks high — that is normal.',
+      contractAddress: MOR_ARBITRUM,
+      contractLabel: 'MOR on Arbitrum',
     },
     {
       number: 2,
