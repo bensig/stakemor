@@ -8,10 +8,9 @@
     <p class="text-sm text-[var(--color-text-muted)] font-medium">
       How much MOR are you planning to stake?
     </p>
-    <div class="inline-flex rounded-full border border-[var(--color-border)] p-1 self-start md:self-auto" role="tablist">
+    <div class="inline-flex rounded-full border border-[var(--color-border)] p-1 self-start md:self-auto">
       <button
         type="button"
-        role="tab"
         data-path="long"
         aria-selected="true"
         class="path-btn px-4 py-1.5 text-sm rounded-full transition-colors"
@@ -20,7 +19,6 @@
       </button>
       <button
         type="button"
-        role="tab"
         data-path="short"
         aria-selected="false"
         class="path-btn px-4 py-1.5 text-sm rounded-full transition-colors"
@@ -46,7 +44,7 @@
 </style>
 
 <script>
-  type PathId = 'long' | 'short';
+  import type { PathId } from '../lib/path';
 
   function readHash(): PathId {
     const m = window.location.hash.match(/path=(long|short)/);
