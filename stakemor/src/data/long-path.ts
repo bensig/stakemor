@@ -7,7 +7,7 @@ import {
   morBillingUrl,
 } from '../lib/urls';
 
-const REFERRER = import.meta.env.SUSHI_REFERRER ?? 'stakemor';
+const REFERRER = import.meta.env.PUBLIC_SUSHI_REFERRER ?? 'stakemor';
 
 const MOR_ARBITRUM = '0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86';
 

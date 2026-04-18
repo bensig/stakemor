@@ -21,11 +21,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return Response.json({ ok: false, error: 'invalid_body' }, { status: 400 });
   }
 
-  const { email, path } = (body ?? {}) as {
-    email?: string;
-    path?: string;
-  };
-  if (typeof email !== 'string' || (path !== 'long' && path !== 'short')) {
+  const { email } = (body ?? {}) as { email?: string };
+  if (typeof email !== 'string') {
     return Response.json({ ok: false, error: 'invalid_body' }, { status: 400 });
   }
 
@@ -39,7 +36,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const result = await subscribe({
     email,
-    path,
     apiKey: env.RESEND_API_KEY,
     audienceId: env.RESEND_AUDIENCE_ID,
   });

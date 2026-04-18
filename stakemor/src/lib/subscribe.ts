@@ -2,7 +2,6 @@ import { Resend } from 'resend';
 
 export interface SubscribeInput {
   email: string;
-  path: 'long' | 'short';
   apiKey: string;
   audienceId: string;
 }

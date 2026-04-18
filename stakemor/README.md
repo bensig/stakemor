@@ -26,7 +26,7 @@ npm run build          # production build into dist/
 |-----|-------|----------|
 | `RESEND_API_KEY` | Resend dashboard → API Keys | yes (for /api/subscribe) |
 | `RESEND_AUDIENCE_ID` | Resend → Audiences → ID | yes |
-| `SUSHI_REFERRER` | Sushi referral code (defaults to `stakemor`) | no |
+| `PUBLIC_SUSHI_REFERRER` | Sushi referral code (defaults to `stakemor`); build-time variable, visible to clients | no |
 | `PUBLIC_PLAUSIBLE_DOMAIN` | Plausible domain to track (e.g. `stakemor.com`) | no |
 
 ## Deployment (Cloudflare Pages)

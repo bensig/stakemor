@@ -34,11 +34,6 @@
 </section>
 
 <script>
-  function currentPath(): 'long' | 'short' {
-    const m = window.location.hash.match(/path=(long|short)/);
-    return (m?.[1] as 'long' | 'short') ?? 'long';
-  }
-
   const form = document.getElementById('subscribe-form') as HTMLFormElement | null;
   const status = document.getElementById('subscribe-status');
   if (form && status) {
@@ -53,7 +48,7 @@
         const res = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ email, path: currentPath() }),
+          body: JSON.stringify({ email }),
         });
         const json = (await res.json()) as { ok: boolean; error?: string };
         if (json.ok) {
@@ -63,7 +58,7 @@
           const w = window as unknown as {
             plausible?: (event: string, opts?: { props?: Record<string, string> }) => void;
           };
-          w.plausible?.('subscribe', { props: { path: currentPath() } });
+          w.plausible?.('subscribe', { props: { path: (window.location.hash.match(/path=(long|short)/)?.[1] ?? 'long') } });
         } else {
           status.textContent =
             json.error === 'invalid_email'

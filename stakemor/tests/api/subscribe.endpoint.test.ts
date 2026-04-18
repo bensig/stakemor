@@ -31,12 +31,11 @@ function makeContext(body: unknown, env: Record<string, string> = {}) {
 describe('POST /api/subscribe', () => {
   it('returns 200 + ok:true when subscribe succeeds', async () => {
     subscribeMock.mockResolvedValue({ ok: true });
-    const res = await POST(makeContext({ email: 'a@b.com', path: 'long' }));
+    const res = await POST(makeContext({ email: 'a@b.com' }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ ok: true });
     expect(subscribeMock).toHaveBeenCalledWith({
       email: 'a@b.com',
-      path: 'long',
       apiKey: 'key',
       audienceId: 'aud',
     });
@@ -44,7 +43,7 @@ describe('POST /api/subscribe', () => {
 
   it('returns 400 on invalid email', async () => {
     subscribeMock.mockResolvedValue({ ok: false, error: 'invalid_email' });
-    const res = await POST(makeContext({ email: 'bad', path: 'short' }));
+    const res = await POST(makeContext({ email: 'bad' }));
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({
       ok: false,
@@ -54,19 +53,13 @@ describe('POST /api/subscribe', () => {
 
   it('returns 502 on provider error', async () => {
     subscribeMock.mockResolvedValue({ ok: false, error: 'provider_error' });
-    const res = await POST(makeContext({ email: 'a@b.com', path: 'long' }));
+    const res = await POST(makeContext({ email: 'a@b.com' }));
     expect(res.status).toBe(502);
-  });
-
-  it('returns 400 when path is missing or invalid', async () => {
-    const res = await POST(makeContext({ email: 'a@b.com', path: 'huge' }));
-    expect(res.status).toBe(400);
-    expect(subscribeMock).not.toHaveBeenCalled();
   });
 
   it('returns 500 when env is missing the API key', async () => {
     const res = await POST(
-      makeContext({ email: 'a@b.com', path: 'long' }, { RESEND_API_KEY: '' }),
+      makeContext({ email: 'a@b.com' }, { RESEND_API_KEY: '' }),
     );
     expect(res.status).toBe(500);
   });

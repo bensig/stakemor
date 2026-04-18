@@ -19,7 +19,6 @@ describe('subscribe', () => {
 
     const result = await subscribe({
       email: 'a@b.com',
-      path: 'long',
       apiKey: 'key',
       audienceId: 'aud',
     });
@@ -37,7 +36,6 @@ describe('subscribe', () => {
   it('rejects an invalid email', async () => {
     const result = await subscribe({
       email: 'not-an-email',
-      path: 'long',
       apiKey: 'key',
       audienceId: 'aud',
     });
@@ -50,7 +48,6 @@ describe('subscribe', () => {
 
     const result = await subscribe({
       email: 'a@b.com',
-      path: 'short',
       apiKey: 'key',
       audienceId: 'aud',
     });
@@ -62,7 +59,6 @@ describe('subscribe', () => {
 
     const result = await subscribe({
       email: 'a@b.com',
-      path: 'long',
       apiKey: 'key',
       audienceId: 'aud',
     });

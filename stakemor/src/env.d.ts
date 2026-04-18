@@ -1,7 +1,7 @@
 /// <reference path="../.astro/types.d.ts" />
 
 interface ImportMetaEnv {
-  readonly SUSHI_REFERRER?: string;
+  readonly PUBLIC_SUSHI_REFERRER?: string;
   readonly PUBLIC_PLAUSIBLE_DOMAIN?: string;
 }
 
