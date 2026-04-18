@@ -1,0 +1,85 @@
+---
+---
+<aside
+  id="amount-picker"
+  class="sticky top-0 z-30 backdrop-blur bg-[var(--color-bg-translucent)] border-b border-[var(--color-border)]"
+>
+  <div class="max-w-4xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <p class="text-sm text-[var(--color-text-muted)] font-medium">
+      How much MOR are you planning to stake?
+    </p>
+    <div class="inline-flex rounded-full border border-[var(--color-border)] p-1 self-start md:self-auto" role="tablist">
+      <button
+        type="button"
+        role="tab"
+        data-path="long"
+        aria-selected="true"
+        class="path-btn px-4 py-1.5 text-sm rounded-full transition-colors"
+      >
+        Any amount (recommended)
+      </button>
+      <button
+        type="button"
+        role="tab"
+        data-path="short"
+        aria-selected="false"
+        class="path-btn px-4 py-1.5 text-sm rounded-full transition-colors"
+      >
+        Small (&lt; $500)
+      </button>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .path-btn[aria-selected="true"] {
+    background: var(--color-mor);
+    color: #000;
+    font-weight: 600;
+  }
+  .path-btn[aria-selected="false"] {
+    color: var(--color-text-muted);
+  }
+  .path-btn[aria-selected="false"]:hover {
+    color: var(--color-text);
+  }
+</style>
+
+<script>
+  type PathId = 'long' | 'short';
+
+  function readHash(): PathId {
+    const m = window.location.hash.match(/path=(long|short)/);
+    return (m?.[1] as PathId) ?? 'long';
+  }
+
+  function applyPath(path: PathId) {
+    document.querySelectorAll<HTMLButtonElement>('.path-btn').forEach((btn) => {
+      btn.setAttribute(
+        'aria-selected',
+        btn.dataset.path === path ? 'true' : 'false',
+      );
+    });
+    document.querySelectorAll<HTMLElement>('[data-path-section]').forEach((el) => {
+      el.hidden = el.dataset.pathSection !== path;
+    });
+    window.dispatchEvent(
+      new CustomEvent('pathchange', { detail: { path } }),
+    );
+  }
+
+  function setPath(path: PathId) {
+    const hash = `#path=${path}`;
+    if (window.location.hash !== hash) {
+      history.replaceState(null, '', hash);
+    }
+    applyPath(path);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.path-btn').forEach((btn) => {
+    btn.addEventListener('click', () => setPath(btn.dataset.path as PathId));
+  });
+
+  window.addEventListener('hashchange', () => applyPath(readHash()));
+  applyPath(readHash());
+</script>

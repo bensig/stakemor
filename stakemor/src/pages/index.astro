@@ -1,9 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
+import AmountPicker from '../components/AmountPicker.astro';
 ---
 <Base>
-  <main>
-    <Hero />
+  <Hero />
+  <AmountPicker />
+  <main class="max-w-4xl mx-auto px-6 py-12">
+    <section data-path-section="long">
+      <p class="text-[var(--color-text-muted)]">Long-path content goes here.</p>
+    </section>
+    <section data-path-section="short" hidden>
+      <p class="text-[var(--color-text-muted)]">Short-path content goes here.</p>
+    </section>
   </main>
 </Base>
