@@ -1,0 +1,88 @@
+---
+import { longPath } from '../data/long-path';
+import { shortPath } from '../data/short-path';
+---
+<nav
+  id="path-sidebar"
+  aria-label="Step navigation"
+  class="hidden lg:block sticky top-24 self-start w-56 shrink-0"
+>
+  <p class="text-xs uppercase tracking-widest text-[var(--color-text-dim)] mb-3">
+    Steps
+  </p>
+
+  <ol data-sidebar-list="long" class="space-y-1">
+    {longPath.steps.map((step) => (
+      <li>
+        <a
+          href={`#step-long-${step.number}`}
+          data-spy={`step-long-${step.number}`}
+          class="spy-link block py-1.5 pl-3 border-l-2 border-[var(--color-border)] text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+        >
+          {step.number}. {step.title.split(/[—–-]/)[0].trim()}
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <ol data-sidebar-list="short" class="space-y-1" hidden>
+    {shortPath.steps.map((step) => (
+      <li>
+        <a
+          href={`#step-short-${step.number}`}
+          data-spy={`step-short-${step.number}`}
+          class="spy-link block py-1.5 pl-3 border-l-2 border-[var(--color-border)] text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+        >
+          {step.number}. {step.title.split(/[—–-]/)[0].trim()}
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .spy-link[data-active="true"] {
+    color: var(--color-mor);
+    border-left-color: var(--color-mor);
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  import type { PathId } from '../lib/path';
+
+  function activate(id: string | null) {
+    document.querySelectorAll<HTMLAnchorElement>('.spy-link').forEach((a) => {
+      a.setAttribute('data-active', a.dataset.spy === id ? 'true' : 'false');
+    });
+  }
+
+  function setupObserver() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (visible) activate(visible.target.id);
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: 0 },
+    );
+    document.querySelectorAll<HTMLElement>('[id^="step-"]').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  function showSidebarFor(path: PathId) {
+    document.querySelectorAll<HTMLElement>('[data-sidebar-list]').forEach((el) => {
+      el.hidden = el.dataset.sidebarList !== path;
+    });
+  }
+
+  window.addEventListener('pathchange', (e) => {
+    showSidebarFor(e.detail.path);
+  });
+
+  setupObserver();
+  const initialHash = window.location.hash.match(/path=(long|short)/);
+  showSidebarFor((initialHash?.[1] as PathId) ?? 'long');
+</script>
