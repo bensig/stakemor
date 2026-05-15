@@ -17,11 +17,15 @@ function getEnvVars(locals?: App.Locals): Env {
   // locals.runtime.env is populated in test contexts (and older adapter versions)
   const runtimeEnv = (locals as unknown as { runtime?: { env?: Env } })?.runtime?.env ?? {};
   const cfTyped = cfEnv as unknown as Env;
+  // `process` is undefined on the Cloudflare Workers runtime without nodejs_compat;
+  // accessing process.env there throws a ReferenceError and crashes the worker.
+  const nodeEnv: Env =
+    typeof process !== 'undefined' && process.env ? (process.env as unknown as Env) : {};
   return {
     SENDGRID_API_KEY:
-      runtimeEnv.SENDGRID_API_KEY ?? cfTyped.SENDGRID_API_KEY ?? process.env.SENDGRID_API_KEY,
+      runtimeEnv.SENDGRID_API_KEY ?? cfTyped.SENDGRID_API_KEY ?? nodeEnv.SENDGRID_API_KEY,
     SENDGRID_LIST_ID:
-      runtimeEnv.SENDGRID_LIST_ID ?? cfTyped.SENDGRID_LIST_ID ?? process.env.SENDGRID_LIST_ID,
+      runtimeEnv.SENDGRID_LIST_ID ?? cfTyped.SENDGRID_LIST_ID ?? nodeEnv.SENDGRID_LIST_ID,
   };
 }
 
